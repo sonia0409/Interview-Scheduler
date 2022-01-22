@@ -29,3 +29,16 @@ export function getInterview(state, interview) {
   //output object of interview with student and interviewer = state.interviewer
   return interviewObj;
 }
+
+export function getInterviewersForDay(state, day) {
+  const interviewIds = state.days
+    .filter((schedule) => schedule.name === day)
+    .map((day) => day.interviewers)
+    .flat();
+
+  const interviews = interviewIds.map(
+    (interviewId) => state.interviewers[interviewId]
+  );
+
+  return interviews;
+}
