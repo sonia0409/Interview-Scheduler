@@ -6,7 +6,7 @@ import "./InterviewerListItem.scss";
 import classNames from "classnames";
 
 function InterviewerListItem(props) {
-  const { id, name, avatar, setInterviewer ,selected} = props;
+  const { name, avatar, setInterviewer ,selected} = props;
   const interviewerStyle = classNames("interviewers__item", {"interviewers__item--selected": selected} )
 
   return (
