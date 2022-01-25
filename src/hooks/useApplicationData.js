@@ -25,12 +25,44 @@ function useApplicationData() {
     });
   }, []);
 
+   
+
+  // update the existing spots
+  const updateSpots = (requestType) => {
+    /* const days = state.days
+    const day = days.fi(day => day.name === state.day )
+    console.log("========",day)
+    const spot = requestType === "bookAppointment"? { ...day, spots: day.spots - 1 }:{ ...day, spots: day.spots + 1 };
+    console.log("============", spot)
+    return  spot ; */
+    const days = state.days.map( day => {
+      if (day.name === state.day) {
+        if (requestType === "bookAppointment") {
+          return { ...day, spots: day.spots - 1 }
+        } else {
+          return { ...day, spots: day.spots + 1 }
+        }
+      } else {
+        return { ...day }
+      }
+    })
+    // console.log("----days", days)
+    return days
+  }
+
+
   // to book a new appointment
   const bookInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview },
+      // interview: { ...interview },
     };
+
+    const editing = appointment.interview
+    appointment.interview = { ...interview } 
+
+    let days = [ ...state.days ];
+    
     // adding new created appointment to the appointmnets object( nested within the state object)
     const appointments = { ...state.appointments, [id]: appointment };
     console.log("I am in application bookInterview: ", id, appointments);
@@ -41,9 +73,16 @@ function useApplicationData() {
         setTimeout(() => res.status(500).json({}), 1000);
         return;
       }
-      setState({ ...state, appointments });
+      if (!editing) {
+        days = updateSpots("bookAppointment")
+      }
+      setState({ ...state, appointments, days });
+  
     });
   };
+
+  
+ 
 
   //to delete the appointment
   const cancelInterview = (id, interview) => {
@@ -60,11 +99,13 @@ function useApplicationData() {
         setTimeout(() => res.status(500).json({}), 1000);
         return;
       }
-      setState({ ...state, appointments });
+      const days = updateSpots()
+      setState({ ...state, appointments, days });
+     
     });
   };
 
-  return { state, setDay, bookInterview, cancelInterview };
+  return { state, setDay, bookInterview, cancelInterview, remainingSpots };
 }
 
 export default useApplicationData;
