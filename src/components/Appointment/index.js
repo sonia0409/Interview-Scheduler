@@ -4,14 +4,23 @@ import Header from "./Header";
 import Show from "./Show";
 import Empty from "./Empty";
 import Form from "./Form";
+import Status from "./Status";
+import Confirm from "./Confirm";
 import useVisualMode from "helpers/useVisualMode";
 
 function Appointment(props) {
   const { time, interview, interviewers, ...appointment } = props;
+
   //mode constants
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
+  const SAVING = "SAVING";
+  const CONFIRM = "CONFIRM ";
+  const DELETING = "DELETING";
+  const EDIT = "EDIT";
+  
+
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY); // if interview is true set mode = SHOW else EMPTY
 
   const save = (name, interviewer) => {
@@ -19,10 +28,17 @@ function Appointment(props) {
       student: name,
       interviewer,
     };
-  //  console.log("I am in index-save function",interview)
-    return interview;
+    transition(SAVING);
+    setTimeout(() => {
+      props.bookInterview(appointment.id, interview).then(transition(SHOW));
+    }, 1000);
   };
-
+  const onDelete = () => {
+    //transition(CONFIRM);
+    const interview = "null";
+    props.cancelInterview(appointment.id, interview);
+  };
+  
   return (
     <article className="appointment">
       <Header time={time} />
@@ -34,22 +50,48 @@ function Appointment(props) {
           }}
         />
       )}
-      {mode === SHOW && (
-        <Show student={interview.student} interviewer={interview.interviewer} />
+      {mode === SHOW && interview && (
+        <Show
+          student={interview.student}
+          interviewer={interview.interviewer}
+          onDelete={() => transition(CONFIRM) }  // to delete the interview
+          onEdit={() => transition(EDIT) }
+        />
       )}
       {mode === CREATE && (
         <Form
           interviewers={interviewers}
           onCancel={() => {
-            //            console.log("onCancel Clicked!!");
             back();
           }}
-          onSave={(student, interviewer) => {
-            const interview = save(student, interviewer)
-            props.bookInterview(appointment.id,interview);
+          onSave={save}
+        />
+      )}
+      {mode === SAVING && <Status message="Saving" />}
+
+      {mode === CONFIRM && (
+        <Confirm
+          message="Delete the appointment?"
+          onConfirm={() => {
+            onDelete();
+            transition(DELETING);
+            setTimeout(() => transition(EMPTY),1500)
+          }
+          }
+          onCancel={() => {
+            back();
           }}
         />
       )}
+      {mode === DELETING && <Status message="Deleting" />}
+      
+      {mode === EDIT && interview && <Form 
+      student={interview.student}
+      interviewer={interview.interviewer.id}
+      interviewers={interviewers}
+      onSave={save }  // to save the changes
+      onCancel={() => back() }/> }
+      
     </article>
   );
 }
