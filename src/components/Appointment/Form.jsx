@@ -11,7 +11,7 @@ function Form(props) {
 
   const handleChange = (event) => {
     event.preventDefault()
-    console.log(event.target.value);
+  //  console.log(event.target.value);
     setStudent(event.target.value);
   };
   const reset = () => {
@@ -37,7 +37,6 @@ function Form(props) {
             placeholder="Enter Student Name"
             value={student}
             onChange={handleChange}
-      
           />
         </form>
         <InterviewerList

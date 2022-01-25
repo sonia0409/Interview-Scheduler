@@ -51,9 +51,13 @@ export default function Application(props) {
     return axios
       .put(`/api/appointments/${id}`, { interview })
       .then((res) => {
+        if (process.env.TEST_ERROR) {
+          setTimeout(() => res.status(500).json({}), 1000);
+          return;
+        }
         setState({ ...state, appointments });
       })
-      .catch((err) => console.log(err.message));
+      //.catch((err) => console.log(err.message));
   };
 
   //to delete the appointment
@@ -71,10 +75,13 @@ export default function Application(props) {
     return axios
     .delete(`/api/appointments/${id}`)
     .then((res) => {
-      console.log(res);
+      if (process.env.TEST_ERROR) {
+        setTimeout(() => res.status(500).json({}), 1000);
+        return;
+      }
       setState({ ...state, appointments });
     })
-    .catch((err) => console.log(err.message));
+   // .catch((err) => console.log(err.message));
   };
 
   const appointments = getAppointmentsForDay(state, state.day);
