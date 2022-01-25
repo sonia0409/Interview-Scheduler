@@ -37,13 +37,51 @@ export default function Application(props) {
     });
   }, []);
 
+  // to book a new appointment
+  const bookInterview = (id, interview) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+    // adding new created appointment to the appointmnets object( nested within the state object)
+    const appointments = { ...state.appointments, [id]: appointment };
+    console.log("I am in application bookInterview: ", id, appointments);
+
+    //put axios request
+    return axios
+      .put(`/api/appointments/${id}`, { interview })
+      .then((res) => {
+        setState({ ...state, appointments });
+      })
+      .catch((err) => console.log(err.message));
+  };
+
+  //to delete the appointment
+  const cancelInterview = (id, interview) => {
+    //find the respective appointment id
+    const appointment = {
+      ...state.appointments[id],
+      interview: interview,
+    };
+    //set interview data to null
+    const appointments = { ...state.appointments, [id]: appointment };
+    //setState({...state, appointments})
+    //console.log("I am in cancelInterview application: ", id, appointments);
+
+    return axios
+    .delete(`/api/appointments/${id}`)
+    .then((res) => {
+      console.log(res);
+      setState({ ...state, appointments });
+    })
+    .catch((err) => console.log(err.message));
+  };
+
   const appointments = getAppointmentsForDay(state, state.day);
   const interviewers = getInterviewersForDay(state, state.day); // an array of interviewers
   // console.log("I am in application- interviewers:",interviewers);
   // console.log("I am in application- appointments:",appointments);
-  const bookInterview = (id, interview) => {
-    console.log("I am in application: ",id, interview);
-  };
+  //loop through the appontments array
   const appointment = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     //    console.log("I am in application- interview:",interview)
@@ -55,6 +93,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
