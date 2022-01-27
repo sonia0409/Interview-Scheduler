@@ -29,12 +29,6 @@ function useApplicationData() {
 
   // update the existing spots
   const updateSpots = (requestType) => {
-    /* const days = state.days
-    const day = days.fi(day => day.name === state.day )
-    console.log("========",day)
-    const spot = requestType === "bookAppointment"? { ...day, spots: day.spots - 1 }:{ ...day, spots: day.spots + 1 };
-    console.log("============", spot)
-    return  spot ; */
     const days = state.days.map( day => {
       if (day.name === state.day) {
         if (requestType === "bookAppointment") {
@@ -46,7 +40,6 @@ function useApplicationData() {
         return { ...day }
       }
     })
-    // console.log("----days", days)
     return days
   }
 
@@ -105,7 +98,7 @@ function useApplicationData() {
     });
   };
 
-  return { state, setDay, bookInterview, cancelInterview, remainingSpots };
+  return { state, setDay, bookInterview, cancelInterview };
 }
 
 export default useApplicationData;
