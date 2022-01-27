@@ -25,24 +25,21 @@ function useApplicationData() {
     });
   }, []);
 
-   
-
   // update the existing spots
   const updateSpots = (requestType) => {
-    const days = state.days.map( day => {
+    const days = state.days.map((day) => {
       if (day.name === state.day) {
         if (requestType === "bookAppointment") {
-          return { ...day, spots: day.spots - 1 }
+          return { ...day, spots: day.spots - 1 };
         } else {
-          return { ...day, spots: day.spots + 1 }
+          return { ...day, spots: day.spots + 1 };
         }
       } else {
-        return { ...day }
+        return { ...day };
       }
-    })
-    return days
-  }
-
+    });
+    return days;
+  };
 
   // to book a new appointment
   const bookInterview = (id, interview) => {
@@ -51,14 +48,14 @@ function useApplicationData() {
       // interview: { ...interview },
     };
 
-    const editing = appointment.interview
-    appointment.interview = { ...interview } 
+    //editing edge case
+    const editing = appointment.interview;
+    appointment.interview = { ...interview };
 
-    let days = [ ...state.days ];
-    
+    let days = [...state.days];
+
     // adding new created appointment to the appointmnets object( nested within the state object)
     const appointments = { ...state.appointments, [id]: appointment };
-    console.log("I am in application bookInterview: ", id, appointments);
 
     //put axios request
     return axios.put(`/api/appointments/${id}`, { interview }).then((res) => {
@@ -67,15 +64,11 @@ function useApplicationData() {
         return;
       }
       if (!editing) {
-        days = updateSpots("bookAppointment")
+        days = updateSpots("bookAppointment");
       }
       setState({ ...state, appointments, days });
-  
     });
   };
-
-  
- 
 
   //to delete the appointment
   const cancelInterview = (id, interview) => {
@@ -92,9 +85,8 @@ function useApplicationData() {
         setTimeout(() => res.status(500).json({}), 1000);
         return;
       }
-      const days = updateSpots()
+      const days = updateSpots();
       setState({ ...state, appointments, days });
-     
     });
   };
 

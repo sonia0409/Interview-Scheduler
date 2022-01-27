@@ -6,7 +6,7 @@ import { useState } from "react";
 function Form(props) {
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
-  const[error, setError] = useState("");
+  const [error, setError] = useState("");
   const { interviewers, onSave, onCancel, onChange } = props;
 
   const handleChange = (event) => {

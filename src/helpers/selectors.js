@@ -13,17 +13,13 @@ export function getAppointmentsForDay(state, day) {
 
 export function getInterview(state, interview) {
   //input state - an arrya of objects; interview- an object with student and interviewer object
-  /* const interviewObj = interview
-    ? { ...interview, interviewer: state.interviewers[interview.interviewer] }
-    : null; */
-
   if (!interview) {
     return null;
   }
-  const interviewId = interview.interviewer
+  const interviewId = interview.interviewer;
   const interviewObj = {
     student: interview.student,
-    interviewer: state.interviewers[interviewId]
+    interviewer: state.interviewers[interviewId],
   };
 
   //output object of interview with student and interviewer = state.interviewer
