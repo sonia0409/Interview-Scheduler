@@ -21,3 +21,7 @@ npm test
 ```sh
 npm run storybook
 ```
+## Screenshots of the schduler app
+!["interview-scheduler"](https://github.com/sonia0409/scheduler/blob/master/docs/interview-scheduler.png)
+
+!["book-an-appointment"](https://github.com/sonia0409/scheduler/blob/master/docs/book-an-appointment.png)
