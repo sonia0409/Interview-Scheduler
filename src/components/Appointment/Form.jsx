@@ -16,7 +16,7 @@ function Form(props) {
   };
   const reset = () => {
     setStudent("");
-    setInterviewer("");
+    setInterviewer(null);
   };
 
   const cancel = () => {
@@ -27,6 +27,10 @@ function Form(props) {
     if (student === "") {
       setError("Student name cannot be blank");
       return;
+    }
+    if(interviewer === null) {
+      setError("Please choose an interviewer");
+      return
     }
     setError("");
     onSave(student, interviewer)

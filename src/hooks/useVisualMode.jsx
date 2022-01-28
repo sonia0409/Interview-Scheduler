@@ -20,7 +20,9 @@ export default function useVisualMode(initial) {
     if (mode !== initial) {
       setMode(lastValue);
     }
+
   }
 
   return { mode, transition, back };
+
 }
