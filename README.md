@@ -1,7 +1,7 @@
 # Interview Scheduler
 - A Single Page App, which leverage users to:
 - View the available appointments
-- book a new appointment & view the appointment once booked.
+- Book a new appointment & view the appointment once booked.
 - Edit or delete the existing appointment.
 
 
@@ -37,7 +37,7 @@ npm run storybook
 - Cypress 
 
 ## Interact with the database
-[you ca refer to](https://github.com/lighthouse-labs/scheduler-api)
+Can be refered to https://github.com/lighthouse-labs/scheduler-api
 
 
 
